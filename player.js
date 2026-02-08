@@ -1,0 +1,159 @@
+// Spotify-like Music Player
+const songs = [
+    {
+        title: "Let Down",
+        artist: "Radiohead",
+        duration: "4:59",
+        url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" // Placeholder - replace with actual URLs
+    },
+    {
+        title: "Creep",
+        artist: "Radiohead",
+        duration: "3:59",
+        url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3"
+    },
+    {
+        title: "Fake Plastic Trees",
+        artist: "Radiohead",
+        duration: "4:50",
+        url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3"
+    },
+    {
+        title: "No Surprises",
+        artist: "Radiohead",
+        duration: "3:48",
+        url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3"
+    }
+];
+
+let currentSong = 0;
+let isPlaying = false;
+
+const audioPlayer = document.getElementById('audioPlayer');
+const playPauseBtn = document.getElementById('playPauseBtn');
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+const progressFill = document.querySelector('.progress-fill');
+const progressBar = document.querySelector('.progress-bar');
+const currentTimeEl = document.querySelector('.current-time');
+const totalTimeEl = document.querySelector('.total-time');
+const volumeSlider = document.querySelector('.volume-slider');
+const songItems = document.querySelectorAll('.song-item');
+
+// Initialize
+audioPlayer.volume = 0.7;
+
+// Load song
+function loadSong(index) {
+    currentSong = index;
+    audioPlayer.src = songs[index].url;
+    
+    // Update active song in playlist
+    songItems.forEach((item, i) => {
+        if (i === index) {
+            item.classList.add('active');
+            item.querySelector('.fa-play').classList.replace('fa-play', 'fa-pause');
+        } else {
+            item.classList.remove('active');
+            const icon = item.querySelector('.fa-pause') || item.querySelector('.fa-play');
+            if (icon.classList.contains('fa-pause')) {
+                icon.classList.replace('fa-pause', 'fa-play');
+            }
+        }
+    });
+}
+
+// Play song
+function playSong() {
+    isPlaying = true;
+    audioPlayer.play();
+    playPauseBtn.querySelector('i').classList.replace('fa-play', 'fa-pause');
+    songItems[currentSong].querySelector('i').classList.replace('fa-play', 'fa-pause');
+}
+
+// Pause song
+function pauseSong() {
+    isPlaying = false;
+    audioPlayer.pause();
+    playPauseBtn.querySelector('i').classList.replace('fa-pause', 'fa-play');
+    songItems[currentSong].querySelector('i').classList.replace('fa-pause', 'fa-play');
+}
+
+// Toggle play/pause
+playPauseBtn.addEventListener('click', () => {
+    if (isPlaying) {
+        pauseSong();
+    } else {
+        if (!audioPlayer.src) {
+            loadSong(0);
+        }
+        playSong();
+    }
+});
+
+// Previous song
+prevBtn.addEventListener('click', () => {
+    currentSong = (currentSong - 1 + songs.length) % songs.length;
+    loadSong(currentSong);
+    if (isPlaying) playSong();
+});
+
+// Next song
+nextBtn.addEventListener('click', () => {
+    currentSong = (currentSong + 1) % songs.length;
+    loadSong(currentSong);
+    if (isPlaying) playSong();
+});
+
+// Song selection from playlist
+songItems.forEach((item, index) => {
+    item.addEventListener('click', () => {
+        if (currentSong === index && isPlaying) {
+            pauseSong();
+        } else {
+            loadSong(index);
+            playSong();
+        }
+    });
+});
+
+// Update progress bar
+audioPlayer.addEventListener('timeupdate', () => {
+    const { currentTime, duration } = audioPlayer;
+    const progressPercent = (currentTime / duration) * 100;
+    progressFill.style.width = `${progressPercent}%`;
+    
+    // Update time display
+    currentTimeEl.textContent = formatTime(currentTime);
+    if (duration) {
+        totalTimeEl.textContent = formatTime(duration);
+    }
+});
+
+// Seek functionality
+progressBar.addEventListener('click', (e) => {
+    const width = progressBar.clientWidth;
+    const clickX = e.offsetX;
+    const duration = audioPlayer.duration;
+    audioPlayer.currentTime = (clickX / width) * duration;
+});
+
+// Volume control
+volumeSlider.addEventListener('input', (e) => {
+    audioPlayer.volume = e.target.value / 100;
+});
+
+// Auto play next song
+audioPlayer.addEventListener('ended', () => {
+    nextBtn.click();
+});
+
+// Format time helper
+function formatTime(seconds) {
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+}
+
+// Load first song on page load
+loadSong(0);
