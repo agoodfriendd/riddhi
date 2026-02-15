@@ -9,6 +9,7 @@
 </head>
 <body>
     <div class="hero">
+        <canvas id="aurora-canvas"></canvas>
         <div class="content">
             <h1 class="main-title">Songs for You</h1>
             <p class="subtitle">Music that reflects how I feel</p>
@@ -51,6 +52,14 @@
                         </div>
                         <div class="song-duration">3:48</div>
                     </div>
+                    <div class="song-item" data-song="4">
+                        <div class="song-play"><i class="fas fa-play"></i></div>
+                        <div class="song-info">
+                            <div class="song-title">Iktara</div>
+                            <div class="song-artist">Amit Trivedi, Kavita Seth</div>
+                        </div>
+                        <div class="song-duration">4:37</div>
+                    </div>
                 </div>
                 <div class="player-controls">
                     <audio id="audioPlayer"></audio>
@@ -79,5 +88,6 @@
         </div>
     </div>
     <script src="player.js"></script>
+    <script src="aurora-shader.js"></script>
 </body>
 </html>

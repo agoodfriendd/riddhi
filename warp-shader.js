@@ -1,16 +1,19 @@
-// Animated Dithering Background Effect
-// Recreates the @paper-design/shaders-react Dithering component in vanilla WebGL
+// Warp Shader Background Effect
+// Recreated from @paper-design/shaders-react Warp component in vanilla WebGL
+// Teal/cyan color palette with checks pattern, swirl distortion
 
 (function () {
-  const canvas = document.getElementById('dithering-canvas');
+  const canvas = document.getElementById('warp-canvas');
   if (!canvas) return;
 
   const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
   if (!gl) {
-    // Fallback: just show a subtle noise pattern via CSS
-    canvas.style.background = 'radial-gradient(ellipse at center, rgba(233,69,96,0.15) 0%, transparent 70%)';
+    canvas.style.background = 'linear-gradient(135deg, #003366 0%, #33ccaa 50%, #004d40 100%)';
     return;
   }
+
+  // Enable derivatives extension for edge detection
+  gl.getExtension('OES_standard_derivatives');
 
   // --- Shader Sources ---
   const vertexShaderSource = `
@@ -23,46 +26,27 @@
   `;
 
   const fragmentShaderSource = `
-    precision mediump float;
+    #extension GL_OES_standard_derivatives : enable
+    precision highp float;
     varying vec2 v_uv;
     uniform float u_time;
     uniform vec2 u_resolution;
-    uniform float u_speed;
 
-    // Bayer 4x4 dithering matrix
-    float bayer4x4(vec2 pos) {
-      int x = int(mod(pos.x, 4.0));
-      int y = int(mod(pos.y, 4.0));
-      int index = x + y * 4;
-      // Bayer matrix values / 16
-      if (index == 0) return 0.0 / 16.0;
-      if (index == 1) return 8.0 / 16.0;
-      if (index == 2) return 2.0 / 16.0;
-      if (index == 3) return 10.0 / 16.0;
-      if (index == 4) return 12.0 / 16.0;
-      if (index == 5) return 4.0 / 16.0;
-      if (index == 6) return 14.0 / 16.0;
-      if (index == 7) return 6.0 / 16.0;
-      if (index == 8) return 3.0 / 16.0;
-      if (index == 9) return 11.0 / 16.0;
-      if (index == 10) return 1.0 / 16.0;
-      if (index == 11) return 9.0 / 16.0;
-      if (index == 12) return 15.0 / 16.0;
-      if (index == 13) return 7.0 / 16.0;
-      if (index == 14) return 13.0 / 16.0;
-      if (index == 15) return 5.0 / 16.0;
-      return 0.0;
-    }
+    // Color palette - teal/cyan liquid marble
+    vec3 darkTeal   = vec3(0.0, 0.12, 0.16);   // deep dark
+    vec3 midTeal    = vec3(0.0, 0.35, 0.40);    // medium teal
+    vec3 brightCyan = vec3(0.30, 0.85, 0.75);   // bright cyan
+    vec3 mintLight  = vec3(0.55, 1.0, 0.85);    // light mint
 
-    // Simplex-like noise for warp effect
+    // Smooth noise
     float hash(vec2 p) {
-      return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
+      return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123);
     }
 
     float noise(vec2 p) {
       vec2 i = floor(p);
       vec2 f = fract(p);
-      f = f * f * (3.0 - 2.0 * f);
+      f = f * f * f * (f * (f * 6.0 - 15.0) + 10.0); // quintic interpolation
       float a = hash(i);
       float b = hash(i + vec2(1.0, 0.0));
       float c = hash(i + vec2(0.0, 1.0));
@@ -73,51 +57,87 @@
     float fbm(vec2 p) {
       float v = 0.0;
       float a = 0.5;
-      vec2 shift = vec2(100.0);
       mat2 rot = mat2(cos(0.5), sin(0.5), -sin(0.5), cos(0.5));
-      for (int i = 0; i < 5; i++) {
+      for (int i = 0; i < 6; i++) {
         v += a * noise(p);
-        p = rot * p * 2.0 + shift;
+        p = rot * p * 2.0 + vec2(100.0);
         a *= 0.5;
       }
       return v;
     }
 
+    // Domain warping - creates the liquid marble look
+    float warpedFbm(vec2 p, float t) {
+      // First warp layer
+      vec2 q = vec2(
+        fbm(p + vec2(0.0, 0.0) + t * 0.15),
+        fbm(p + vec2(5.2, 1.3) + t * 0.12)
+      );
+
+      // Second warp layer
+      vec2 r = vec2(
+        fbm(p + 4.0 * q + vec2(1.7, 9.2) + t * 0.08),
+        fbm(p + 4.0 * q + vec2(8.3, 2.8) + t * 0.10)
+      );
+
+      return fbm(p + 4.0 * r);
+    }
+
     void main() {
       vec2 uv = v_uv;
-      vec2 pixelPos = gl_FragCoord.xy;
-      float t = u_time * u_speed;
+      float aspect = u_resolution.x / u_resolution.y;
+      uv.x *= aspect;
+      float t = u_time * 0.4;
 
-      // Warp distortion
-      vec2 warpUV = uv * 3.0;
-      float warp1 = fbm(warpUV + t * 0.3);
-      float warp2 = fbm(warpUV + warp1 * 1.5 + t * 0.2);
-      vec2 warpedUV = uv + vec2(warp1, warp2) * 0.15;
+      // Scale for the marble pattern
+      vec2 p = uv * 2.5;
 
-      // Radial gradient base
-      vec2 center = vec2(0.5, 0.5);
-      float dist = length(warpedUV - center);
-      float gradient = smoothstep(0.0, 1.2, dist);
-      float intensity = 1.0 - gradient;
+      // Multi-layer domain warping for liquid marble
+      float f1 = warpedFbm(p, t);
+      float f2 = warpedFbm(p + vec2(3.0, -2.0), t * 0.8);
+      float f3 = warpedFbm(p * 0.8 + vec2(-1.0, 4.0), t * 1.2);
 
-      // Add flowing organic shapes
-      float flow = fbm(warpedUV * 4.0 + t * 0.15);
-      intensity *= flow * 1.8;
-      intensity = clamp(intensity, 0.0, 1.0);
+      // Swirl distortion
+      vec2 center = vec2(aspect * 0.5, 0.5);
+      vec2 d = v_uv * vec2(aspect, 1.0) - center;
+      float angle = 0.8 * sin(t * 0.15);
+      float dist = length(d);
+      float swirlFactor = exp(-dist * 1.5) * angle;
+      vec2 swirlUV = p + vec2(
+        cos(swirlFactor) * d.x - sin(swirlFactor) * d.y,
+        sin(swirlFactor) * d.x + cos(swirlFactor) * d.y
+      ) * 0.3;
+      float f4 = warpedFbm(swirlUV, t * 0.6);
 
-      // Apply Bayer dithering
-      float bayerVal = bayer4x4(pixelPos);
-      float dithered = step(bayerVal, intensity);
+      // Combine warped layers
+      float combined = f1 * 0.4 + f2 * 0.25 + f3 * 0.2 + f4 * 0.15;
 
-      // Color: dark emerald green
-      vec3 color = vec3(0.098, 0.502, 0.298); // #198050 dark emerald
-      
-      // Secondary color accent for depth
-      vec3 color2 = vec3(0.047, 0.353, 0.208); // #0C5A35 deeper emerald
-      float colorMix = fbm(warpedUV * 2.0 - t * 0.1);
-      vec3 finalColor = mix(color, color2, colorMix * 0.5);
+      // Create deep contrast curves (liquid look)
+      float dark = smoothstep(0.2, 0.5, combined);
+      float bright = smoothstep(0.45, 0.75, combined);
+      float highlight = smoothstep(0.65, 0.85, combined);
 
-      gl_FragColor = vec4(finalColor * dithered, dithered * 0.45);
+      // Build color from layers
+      vec3 col = darkTeal;
+      col = mix(col, midTeal, dark);
+      col = mix(col, brightCyan, bright);
+      col = mix(col, mintLight, highlight * 0.8);
+
+      // Add subtle specular-like highlights
+      float spec = smoothstep(0.78, 0.95, combined);
+      col += vec3(0.15, 0.35, 0.25) * spec;
+
+      // Edge glow / rim light effect
+      float edge = abs(dFdx(combined)) + abs(dFdy(combined));
+      edge = smoothstep(0.0, 0.08, edge);
+      col = mix(col, mintLight * 1.1, edge * 0.3);
+
+      // Subtle vignette
+      vec2 vc = v_uv - 0.5;
+      float vignette = 1.0 - dot(vc, vc) * 0.3;
+      col *= vignette;
+
+      gl_FragColor = vec4(col, 1.0);
     }
   `;
 
@@ -164,10 +184,7 @@
   const aPosition = gl.getAttribLocation(program, 'a_position');
   const uTime = gl.getUniformLocation(program, 'u_time');
   const uResolution = gl.getUniformLocation(program, 'u_resolution');
-  const uSpeed = gl.getUniformLocation(program, 'u_speed');
 
-  // --- Animation State ---
-  let speed = 0.2;
   let startTime = performance.now();
 
   // --- Resize ---
@@ -187,11 +204,8 @@
   function render() {
     const elapsed = (performance.now() - startTime) / 1000;
 
-    gl.clearColor(0, 0, 0, 0);
+    gl.clearColor(0, 0, 0, 1);
     gl.clear(gl.COLOR_BUFFER_BIT);
-
-    gl.enable(gl.BLEND);
-    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 
     gl.useProgram(program);
 
@@ -201,7 +215,6 @@
 
     gl.uniform1f(uTime, elapsed);
     gl.uniform2f(uResolution, canvas.width, canvas.height);
-    gl.uniform1f(uSpeed, speed);
 
     gl.drawArrays(gl.TRIANGLES, 0, 6);
 
