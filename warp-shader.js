@@ -33,10 +33,10 @@
     uniform vec2 u_resolution;
 
     // Color palette - teal/cyan liquid marble
-    vec3 darkTeal   = vec3(0.0, 0.12, 0.16);   // deep dark
-    vec3 midTeal    = vec3(0.0, 0.35, 0.40);    // medium teal
-    vec3 brightCyan = vec3(0.30, 0.85, 0.75);   // bright cyan
-    vec3 mintLight  = vec3(0.55, 1.0, 0.85);    // light mint
+    const vec3 darkTeal   = vec3(0.0, 0.12, 0.16);
+    const vec3 midTeal    = vec3(0.0, 0.35, 0.40);
+    const vec3 brightCyan = vec3(0.30, 0.85, 0.75);
+    const vec3 mintLight  = vec3(0.55, 1.0, 0.85);
 
     // Smooth noise
     float hash(vec2 p) {
