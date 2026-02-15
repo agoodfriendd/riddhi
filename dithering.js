@@ -109,11 +109,11 @@
       float bayerVal = bayer4x4(pixelPos);
       float dithered = step(bayerVal, intensity);
 
-      // Color: dark emerald green
-      vec3 color = vec3(0.098, 0.502, 0.298); // #198050 dark emerald
+      // Color: teal/cyan emerald green
+      vec3 color = vec3(0.0, 0.65, 0.55); // teal
       
       // Secondary color accent for depth
-      vec3 color2 = vec3(0.047, 0.353, 0.208); // #0C5A35 deeper emerald
+      vec3 color2 = vec3(0.1, 0.85, 0.70); // bright cyan-green
       float colorMix = fbm(warpedUV * 2.0 - t * 0.1);
       vec3 finalColor = mix(color, color2, colorMix * 0.5);
 
