@@ -12,9 +12,6 @@
     return;
   }
 
-  // Enable derivatives extension for edge detection
-  gl.getExtension('OES_standard_derivatives');
-
   // --- Shader Sources ---
   const vertexShaderSource = `
     attribute vec2 a_position;
@@ -26,19 +23,11 @@
   `;
 
   const fragmentShaderSource = `
-    #extension GL_OES_standard_derivatives : enable
     precision highp float;
     varying vec2 v_uv;
     uniform float u_time;
     uniform vec2 u_resolution;
 
-    // Color palette - teal/cyan liquid marble
-    const vec3 darkTeal   = vec3(0.0, 0.12, 0.16);
-    const vec3 midTeal    = vec3(0.0, 0.35, 0.40);
-    const vec3 brightCyan = vec3(0.30, 0.85, 0.75);
-    const vec3 mintLight  = vec3(0.55, 1.0, 0.85);
-
-    // Smooth noise
     float hash(vec2 p) {
       return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123);
     }
@@ -46,7 +35,7 @@
     float noise(vec2 p) {
       vec2 i = floor(p);
       vec2 f = fract(p);
-      f = f * f * f * (f * (f * 6.0 - 15.0) + 10.0); // quintic interpolation
+      f = f * f * (3.0 - 2.0 * f);
       float a = hash(i);
       float b = hash(i + vec2(1.0, 0.0));
       float c = hash(i + vec2(0.0, 1.0));
@@ -58,7 +47,7 @@
       float v = 0.0;
       float a = 0.5;
       mat2 rot = mat2(cos(0.5), sin(0.5), -sin(0.5), cos(0.5));
-      for (int i = 0; i < 6; i++) {
+      for (int i = 0; i < 5; i++) {
         v += a * noise(p);
         p = rot * p * 2.0 + vec2(100.0);
         a *= 0.5;
@@ -66,20 +55,15 @@
       return v;
     }
 
-    // Domain warping - creates the liquid marble look
     float warpedFbm(vec2 p, float t) {
-      // First warp layer
       vec2 q = vec2(
-        fbm(p + vec2(0.0, 0.0) + t * 0.15),
+        fbm(p + t * 0.15),
         fbm(p + vec2(5.2, 1.3) + t * 0.12)
       );
-
-      // Second warp layer
       vec2 r = vec2(
         fbm(p + 4.0 * q + vec2(1.7, 9.2) + t * 0.08),
         fbm(p + 4.0 * q + vec2(8.3, 2.8) + t * 0.10)
       );
-
       return fbm(p + 4.0 * r);
     }
 
@@ -89,53 +73,42 @@
       uv.x *= aspect;
       float t = u_time * 0.4;
 
-      // Scale for the marble pattern
       vec2 p = uv * 2.5;
 
-      // Multi-layer domain warping for liquid marble
       float f1 = warpedFbm(p, t);
       float f2 = warpedFbm(p + vec2(3.0, -2.0), t * 0.8);
       float f3 = warpedFbm(p * 0.8 + vec2(-1.0, 4.0), t * 1.2);
 
-      // Swirl distortion
+      // Swirl
       vec2 center = vec2(aspect * 0.5, 0.5);
       vec2 d = v_uv * vec2(aspect, 1.0) - center;
-      float angle = 0.8 * sin(t * 0.15);
-      float dist = length(d);
-      float swirlFactor = exp(-dist * 1.5) * angle;
+      float swirlFactor = exp(-length(d) * 1.5) * 0.8 * sin(t * 0.15);
       vec2 swirlUV = p + vec2(
         cos(swirlFactor) * d.x - sin(swirlFactor) * d.y,
         sin(swirlFactor) * d.x + cos(swirlFactor) * d.y
       ) * 0.3;
       float f4 = warpedFbm(swirlUV, t * 0.6);
 
-      // Combine warped layers
       float combined = f1 * 0.4 + f2 * 0.25 + f3 * 0.2 + f4 * 0.15;
 
-      // Create deep contrast curves (liquid look)
+      // Color layers
       float dark = smoothstep(0.2, 0.5, combined);
       float bright = smoothstep(0.45, 0.75, combined);
       float highlight = smoothstep(0.65, 0.85, combined);
 
-      // Build color from layers
-      vec3 col = darkTeal;
-      col = mix(col, midTeal, dark);
-      col = mix(col, brightCyan, bright);
-      col = mix(col, mintLight, highlight * 0.8);
+      // Build color: dark teal -> mid teal -> bright cyan -> mint
+      vec3 col = vec3(0.0, 0.12, 0.16);
+      col = mix(col, vec3(0.0, 0.35, 0.40), dark);
+      col = mix(col, vec3(0.30, 0.85, 0.75), bright);
+      col = mix(col, vec3(0.55, 1.0, 0.85), highlight * 0.8);
 
-      // Add subtle specular-like highlights
+      // Specular highlights
       float spec = smoothstep(0.78, 0.95, combined);
       col += vec3(0.15, 0.35, 0.25) * spec;
 
-      // Edge glow / rim light effect
-      float edge = abs(dFdx(combined)) + abs(dFdy(combined));
-      edge = smoothstep(0.0, 0.08, edge);
-      col = mix(col, mintLight * 1.1, edge * 0.3);
-
-      // Subtle vignette
+      // Vignette
       vec2 vc = v_uv - 0.5;
-      float vignette = 1.0 - dot(vc, vc) * 0.3;
-      col *= vignette;
+      col *= 1.0 - dot(vc, vc) * 0.3;
 
       gl_FragColor = vec4(col, 1.0);
     }
