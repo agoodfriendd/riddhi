@@ -4,7 +4,7 @@ const songs = [
         title: "Let Down",
         artist: "Radiohead",
         duration: "4:59",
-        url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" // Placeholder - replace with actual URLs
+        url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
     },
     {
         title: "Creep",
@@ -23,6 +23,12 @@ const songs = [
         artist: "Radiohead",
         duration: "3:48",
         url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3"
+    },
+    {
+        title: "Iktara",
+        artist: "Amit Trivedi, Kavita Seth",
+        duration: "4:37",
+        url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3"
     }
 ];
 
