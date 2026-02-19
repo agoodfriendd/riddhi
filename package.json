@@ -1,0 +1,23 @@
+{
+  "name": "riddhi",
+  "version": "1.0.0",
+  "description": "",
+  "main": "aurora-shader.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/agoodfriendd/riddhi.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/agoodfriendd/riddhi/issues"
+  },
+  "homepage": "https://github.com/agoodfriendd/riddhi#readme",
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
