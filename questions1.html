@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Questions - Page 1</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .question-container { max-width: 400px; margin: 4em auto; background: #fffbe7; border-radius: 12px; box-shadow: 0 2px 12px #0001; padding: 2em; text-align: center; }
+        .question-img { width: 120px; height: 120px; object-fit: cover; border-radius: 50%; margin-bottom: 1em; }
+        .question-btn { margin: 1em 0.5em 0 0.5em; padding: 0.7em 2em; border: none; border-radius: 8px; background: #f7c59f; color: #222; font-weight: bold; cursor: pointer; font-size: 1em; }
+        .popup-bg { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #0008; z-index: 1000; align-items: center; justify-content: center; }
+        .popup { background: #fff; border-radius: 12px; padding: 2em; text-align: center; box-shadow: 0 2px 16px #0002; max-width: 360px; width: calc(100% - 2em); }
+        .popup-img { width: 100px; height: 100px; object-fit: cover; border-radius: 50%; margin-bottom: 1em; }
+    </style>
+</head>
+<body>
+    <div class="question-container">
+        <img src="https://placekitten.com/120/120" alt="Question Image" class="question-img">
+        <h2>Question 1</h2>
+        <p style="font-size:1.2em;">Can I get the clutcher back?</p>
+        <button class="question-btn" id="yesBtn">Yes</button>
+        <button class="question-btn" id="noBtn">No</button>
+    </div>
+    <div class="popup-bg" id="popupBg">
+        <div class="popup">
+            <img src="https://placebear.com/100/100" alt="Popup Image" class="popup-img">
+            <h3>Can I get the clutcher back plsssss?</h3>
+            <button class="question-btn" id="popupYesBtn">Yes</button>
+            <button class="question-btn" id="popupNoBtn">No</button>
+        </div>
+    </div>
+    <script>
+        const yesBtn = document.getElementById('yesBtn');
+        const noBtn = document.getElementById('noBtn');
+        const popupBg = document.getElementById('popupBg');
+        const popupYesBtn = document.getElementById('popupYesBtn');
+        const popupNoBtn = document.getElementById('popupNoBtn');
+
+        yesBtn.onclick = function() {
+            window.location.href = 'questions2.html';
+        };
+
+        noBtn.onclick = function() {
+            popupBg.style.display = 'flex';
+        };
+
+        popupYesBtn.onclick = function() {
+            window.location.href = 'questions2.html';
+        };
+
+        popupNoBtn.onclick = function() {
+            popupBg.style.display = 'none';
+        };
+    </script>
+</body>
+</html>
