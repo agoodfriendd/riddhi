@@ -1,6 +1,4 @@
-// Warp Shader Background Effect
-// Recreated from @paper-design/shaders-react Warp component in vanilla WebGL
-// Teal/cyan color palette with checks pattern, swirl distortion
+ 
 
 (function () {
   const canvas = document.getElementById('warp-canvas');
@@ -12,7 +10,7 @@
     return;
   }
 
-  // --- Shader Sources ---
+  
   const vertexShaderSource = `
     attribute vec2 a_position;
     varying vec2 v_uv;
@@ -114,7 +112,7 @@
     }
   `;
 
-  // --- Compile Shaders ---
+  
   function createShader(gl, type, source) {
     const shader = gl.createShader(type);
     gl.shaderSource(shader, source);
@@ -146,7 +144,7 @@
   const program = createProgram(gl, vs, fs);
   if (!program) return;
 
-  // --- Geometry (fullscreen quad) ---
+  
   const positionBuffer = gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
@@ -160,7 +158,7 @@
 
   let startTime = performance.now();
 
-  // --- Resize ---
+  
   function resize() {
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
     const w = canvas.clientWidth;
@@ -173,7 +171,7 @@
   window.addEventListener('resize', resize);
   resize();
 
-  // --- Render Loop ---
+  
   function render() {
     const elapsed = (performance.now() - startTime) / 1000;
 

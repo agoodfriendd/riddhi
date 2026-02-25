@@ -1,5 +1,4 @@
-// Animated Aurora Shader Background
-// Recreated from @minhxthanh/animated-shader-background in vanilla WebGL
+
 
 (function () {
   const canvas = document.getElementById('aurora-canvas');
@@ -11,7 +10,7 @@
     return;
   }
 
-  // --- Shader Sources ---
+
   const vertexShaderSource = `
     attribute vec2 a_position;
     void main() {
@@ -88,7 +87,7 @@
     }
   `;
 
-  // --- Compile Shaders ---
+
   function createShader(gl, type, source) {
     const shader = gl.createShader(type);
     gl.shaderSource(shader, source);
@@ -120,7 +119,7 @@
   const program = createProgram(gl, vs, fs);
   if (!program) return;
 
-  // --- Geometry (fullscreen quad) ---
+
   const positionBuffer = gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
@@ -134,7 +133,6 @@
 
   let time = 0;
 
-  // --- Resize ---
   function resize() {
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
     const w = canvas.clientWidth;
@@ -147,7 +145,7 @@
   window.addEventListener('resize', resize);
   resize();
 
-  // --- Render Loop ---
+ 
   function render() {
     time += 0.016;
 

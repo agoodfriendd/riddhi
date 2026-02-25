@@ -1,5 +1,4 @@
-// Animated Dithering Background Effect
-// Recreates the @paper-design/shaders-react Dithering component in vanilla WebGL
+
 
 (function () {
   const canvas = document.getElementById('dithering-canvas');
@@ -7,12 +6,11 @@
 
   const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
   if (!gl) {
-    // Fallback: just show a subtle noise pattern via CSS
+   
     canvas.style.background = 'radial-gradient(ellipse at center, rgba(233,69,96,0.15) 0%, transparent 70%)';
     return;
   }
 
-  // --- Shader Sources ---
   const vertexShaderSource = `
     attribute vec2 a_position;
     varying vec2 v_uv;
@@ -29,12 +27,12 @@
     uniform vec2 u_resolution;
     uniform float u_speed;
 
-    // Bayer 4x4 dithering matrix
+    // ...existing code...
     float bayer4x4(vec2 pos) {
       int x = int(mod(pos.x, 4.0));
       int y = int(mod(pos.y, 4.0));
       int index = x + y * 4;
-      // Bayer matrix values / 16
+      // ...existing code...
       if (index == 0) return 0.0 / 16.0;
       if (index == 1) return 8.0 / 16.0;
       if (index == 2) return 2.0 / 16.0;
@@ -54,7 +52,7 @@
       return 0.0;
     }
 
-    // Simplex-like noise for warp effect
+    // ...existing code...
     float hash(vec2 p) {
       return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
     }
@@ -121,7 +119,7 @@
     }
   `;
 
-  // --- Compile Shaders ---
+
   function createShader(gl, type, source) {
     const shader = gl.createShader(type);
     gl.shaderSource(shader, source);
@@ -153,7 +151,7 @@
   const program = createProgram(gl, vs, fs);
   if (!program) return;
 
-  // --- Geometry (fullscreen quad) ---
+ 
   const positionBuffer = gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
@@ -166,11 +164,10 @@
   const uResolution = gl.getUniformLocation(program, 'u_resolution');
   const uSpeed = gl.getUniformLocation(program, 'u_speed');
 
-  // --- Animation State ---
   let speed = 0.2;
   let startTime = performance.now();
 
-  // --- Resize ---
+  
   function resize() {
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
     const w = canvas.clientWidth;
@@ -183,7 +180,7 @@
   window.addEventListener('resize', resize);
   resize();
 
-  // --- Render Loop ---
+  
   function render() {
     const elapsed = (performance.now() - startTime) / 1000;
 
