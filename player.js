@@ -4,31 +4,31 @@ const songs = [
         title: "Let Down",
         artist: "Radiohead",
         duration: "4:59",
-        url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
+        url: "songs/let_down.mp3"
     },
     {
         title: "Creep",
         artist: "Radiohead",
-        duration: "3:59",
-        url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3"
+        duration: "4:00",
+        url: "songs/creep.mp3"
     },
     {
         title: "Fake Plastic Trees",
         artist: "Radiohead",
-        duration: "4:50",
-        url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3"
+        duration: "4:51",
+        url: "songs/fake_plastic_trees.mp3"
     },
     {
         title: "No Surprises",
         artist: "Radiohead",
-        duration: "3:48",
-        url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3"
+        duration: "3:49",
+        url: "songs/no_surprises.mp3"
     },
     {
         title: "Iktara",
         artist: "Amit Trivedi, Kavita Seth",
-        duration: "4:37",
-        url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3"
+        duration: "4:13",
+        url: "songs/iktara.mp3"
     }
 ];
 
