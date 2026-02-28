@@ -57,18 +57,6 @@ body {
     z-index: 1;
     max-width: 900px;
     text-align: center;
-    animation: fadeIn 1.5s ease-in;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(-30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
 }
 
 .main-title {
@@ -108,7 +96,6 @@ body {
 
 .enter-btn:hover {
     background: #d63651;
-    transform: translateY(-3px);
     box-shadow: 0 15px 40px rgba(233, 69, 96, 0.6);
 }
 
@@ -245,7 +232,6 @@ body {
 
 .control-btn:hover {
     color: #1db954;
-    transform: scale(1.1);
 }
 
 .play-pause {
@@ -262,7 +248,6 @@ body {
 .play-pause:hover {
     background: #1ed760;
     color: white;
-    transform: scale(1.05);
 }
 
 .volume-control {

@@ -46,7 +46,6 @@ body {
     border-radius: 20px;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
     text-align: center;
-    animation: fadeIn 1.5s ease-in;
     overflow: visible;
 }
 
@@ -108,17 +107,6 @@ body {
     transform: translateX(-50%) rotate(var(--decor-rotation)) scale(var(--decor-scale));
 }
 
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(-30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
 h1 {
     color: #2c3e50;
     font-size: 3em;
@@ -161,7 +149,6 @@ h1 {
 
 .nav-link:hover {
     background: #5568d3;
-    transform: translateY(-2px);
     box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
 }
 
@@ -202,4 +189,36 @@ h1 {
     .edge-decor-item.heart {
         font-size: 1.2rem;
     }
+}
+
+.ethereal-bg {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.ethereal-shadow-layer {
+    position: absolute;
+    inset: -80px;
+    background-color: rgba(128, 128, 128, 1);
+    -webkit-mask-image: url("https://framerusercontent.com/images/ceBGguIpUU8luwByxuQz79t7To.png");
+    mask-image: url("https://framerusercontent.com/images/ceBGguIpUU8luwByxuQz79t7To.png");
+    -webkit-mask-size: cover;
+    mask-size: cover;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-position: center;
+    filter: blur(4px);
+}
+
+.ethereal-noise {
+    position: absolute;
+    inset: 0;
+    background-image: url("https://framerusercontent.com/images/g0QcWrxr87K0ufOxIUFBakwYA8.png");
+    background-size: 240px 240px;
+    background-repeat: repeat;
+    opacity: 0.35;
 }
