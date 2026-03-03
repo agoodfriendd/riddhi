@@ -1,157 +1,15 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The GOAT - Riddhi</title>
     <link rel="stylesheet" href="style.css">
-    <style>
-        .goat-section {
-            text-align: center;
-            margin: 2em auto;
-            max-width: 520px;
-        }
-
-        .goat-intro {
-            font-size: 1.15em;
-            color: #d8f5ea;
-            margin-bottom: 1.5em;
-            line-height: 1.8;
-        }
-
-        .crown-box {
-            background: rgba(247, 197, 100, 0.08);
-            border: 2px solid #f7c564;
-            border-radius: 16px;
-            padding: 2em 1.5em;
-            margin: 2em auto;
-            max-width: 480px;
-        }
-
-        .crown-title {
-            font-size: 2em;
-            color: #f7c564;
-            margin-bottom: 0.3em;
-            letter-spacing: 2px;
-        }
-
-        .crown-subtitle {
-            font-size: 1em;
-            color: #b0dfc7;
-            margin-bottom: 1.5em;
-        }
-
-        .goat-image {
-            width: 220px;
-            height: 220px;
-            object-fit: cover;
-            border-radius: 50%;
-            border: 4px solid #f7c564;
-            box-shadow: 0 0 40px rgba(247, 197, 100, 0.25);
-            margin: 1em auto;
-            display: block;
-        }
-
-        .certificate {
-            border: 3px dashed #f7c564;
-            border-radius: 12px;
-            padding: 2em;
-            margin: 2.5em auto;
-            max-width: 460px;
-            background: rgba(247, 197, 100, 0.05);
-            text-align: center;
-        }
-
-        .certificate-title {
-            font-size: 0.8em;
-            letter-spacing: 4px;
-            color: #f7c564;
-            text-transform: uppercase;
-            margin-bottom: 0.5em;
-        }
-
-        .certificate-name {
-            font-size: 2.2em;
-            font-weight: bold;
-            color: #e9fff6;
-            margin: 0.2em 0;
-        }
-
-        .certificate-body {
-            font-size: 1em;
-            color: #b0dfc7;
-            margin: 1em 0;
-            line-height: 1.8;
-        }
-
-        .certificate-stamp {
-            font-size: 3em;
-            margin: 0.5em 0 0 0;
-        }
-
-        .instructions {
-            background: rgba(7, 38, 30, 0.7);
-            border-left: 4px solid #f7c564;
-            border-radius: 0 10px 10px 0;
-            padding: 1.2em 1.5em;
-            margin: 2em auto;
-            max-width: 460px;
-            text-align: left;
-            color: #d8f5ea;
-        }
-
-        .instructions p {
-            margin: 0.4em 0;
-            font-size: 1em;
-        }
-
-        .instructions .step {
-            color: #f7c564;
-            font-weight: bold;
-            margin-right: 0.5em;
-        }
-
-        .print-btn {
-            display: inline-block;
-            margin: 1.5em auto 0 auto;
-            padding: 0.8em 2.5em;
-            background: #f7c564;
-            color: #0a1f18;
-            border: none;
-            border-radius: 10px;
-            font-size: 1.1em;
-            font-weight: bold;
-            cursor: pointer;
-            text-decoration: none;
-            letter-spacing: 1px;
-            transition: background 0.2s;
-        }
-
-        .print-btn:hover {
-            background: #ffe08a;
-        }
-
-        @media print {
-            nav, .goat-intro, .instructions, .print-btn, canvas {
-                display: none !important;
-            }
-            .certificate {
-                border: 3px dashed #000;
-                color: #000;
-                background: #fff;
-                max-width: 100%;
-            }
-            .certificate-title { color: #555; }
-            .certificate-name { color: #000; }
-            .certificate-body { color: #333; }
-            .crown-box { display: none; }
-            .goat-image { display: block; }
-            body { background: white; }
-        }
-    </style>
+    <link rel="stylesheet" href="goat.css">
 </head>
 <body>
     <canvas id="dithering-canvas" style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;"></canvas>
+
     <nav class="navigation">
         <a href="index.html">&larr; Back to Start</a>
         <a href="reassurance.html">&larr; Previous</a>
@@ -162,51 +20,53 @@
 
             <p class="goat-intro">
                 Okay. You read everything. You know everything.<br>
-                Now everything is clear between us.
+                Now everything is clear between us (hopefully)
             </p>
 
-            <div class="crown-box">
-                <div class="crown-title">👑</div>
-                <div class="crown-title">The GOAT</div>
-                <div class="crown-subtitle">Greatest Friend of All Time — officially, undeniably, forever.</div>
-                <img
-                    src="images/GOAT.jpg"
-                    alt="The GOAT"
-                    class="goat-image"
-                    onerror="this.onerror=null; this.src='images/GOAT.jpeg'; this.onerror=function(){this.src='images/GOAT.png'};"
-                >
-            </div>
+            <div class="goat-main-row">
 
-            <div class="certificate" id="certificate">
-                <div class="certificate-title">Official Certificate of Recognition</div>
-                <div class="certificate-body">This certifies that</div>
-                <div class="certificate-name">Steve</div>
-                <div class="certificate-body">
-                    has been officially crowned<br>
-                    <strong style="color:#f7c564; font-size:1.2em;">Greatest Friend of All Time</strong><br><br>
-                    He showed up. He owned it. He said the things most people never say.<br>
-                    That counts for something. Actually — it counts for everything.
+                <div class="crown-box">
+                    <div class="crown-title">&#x1F451;</div>
+                    <div class="crown-title">The GOAT</div>
+                    <div class="crown-subtitle">Greatest Friend of All Time</div>
+                    <img
+                        src="images/GOAT.jpeg"
+                        alt="The GOAT"
+                        class="goat-image"
+                        onerror="this.onerror=null; this.src='images/GOAT.jpeg'; this.onerror=function(){this.src='images/GOAT.png'};"
+                    >
                 </div>
-                <div class="certificate-stamp">🐐</div>
-                <div style="margin-top:1em; font-size:0.85em; color:#7ab89a; border-top: 1px solid #1f6b56; padding-top: 0.8em;">
-                    Awarded by: Riddhi &nbsp;&nbsp;|&nbsp;&nbsp; Date: ___________
+
+                <div class="certificate" id="certificate">
+                    <div class="certificate-title">Official Certificate of Recognition</div>
+                    <div class="certificate-body">This certifies that</div>
+                    <div class="certificate-name">sassam</div>
+                    <div class="certificate-body">
+                        has been officially crowned<br>
+                        <strong>Greatest Friend of All Time</strong><br><br>
+                        Because sometimes he does bad things, but he will never leave you.<br>
+                        That counts for something. And honestly, it counts for everything.
+                    </div>
+                    <div class="certificate-stamp">&#x1F410;</div>
+                    <div class="certificate-footer">
+                        Awarded by: Riddhi &nbsp;&nbsp;|&nbsp;&nbsp; Date: ___________
+                    </div>
                 </div>
+
             </div>
 
             <div class="instructions">
-                <p><span class="step">Step 1.</span> Print this page out.</p>
-                <p><span class="step">Step 2.</span> Cut out the certificate above.</p>
-                <p><span class="step">Step 3.</span> Give it to me.</p>
-                <p style="margin-top:1em; font-size:0.9em; color:#7ab89a;">
-                    (Yes I'm serious. Yes I will keep it.)
-                </p>
+                <p><span class="step">Step 1.</span> Take a screenshot of this page.</p>
+                <p><span class="step">Step 2.</span> Print it out.</p>
+                <p><span class="step">Step 3.</span> Cut out the certificate.</p>
+                <p><span class="step">Step 4.</span> Give it to me.</p>
+                <p class="note">(If you really think I deserve this, then go ahead. I will definitely keep it.)</p>
             </div>
-
-            <button class="print-btn" onclick="window.print()">🖨️ Print This Page</button>
 
         </div>
     </div>
 
     <script src="dithering.js"></script>
+    <script src="goat.js"></script>
 </body>
 </html>
