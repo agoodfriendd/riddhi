@@ -289,11 +289,11 @@ body {
     .main-title {
         font-size: 3em;
     }
-    
+
     .subtitle {
         font-size: 1.3em;
     }
-    
+
     .topic-grid {
         grid-template-columns: 1fr;
     }

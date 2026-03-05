@@ -1,5 +1,6 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,8 +8,10 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="goat.css">
 </head>
+
 <body>
-    <canvas id="dithering-canvas" style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;"></canvas>
+    <canvas id="dithering-canvas"
+        style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;"></canvas>
 
     <nav class="navigation">
         <a href="index.html">&larr; Back to Start</a>
@@ -29,12 +32,8 @@
                     <div class="crown-title">&#x1F451;</div>
                     <div class="crown-title">The GOAT</div>
                     <div class="crown-subtitle">Greatest Friend of All Time</div>
-                    <img
-                        src="images/GOAT.jpeg"
-                        alt="The GOAT"
-                        class="goat-image"
-                        onerror="this.onerror=null; this.src='images/GOAT.jpeg'; this.onerror=function(){this.src='images/GOAT.png'};"
-                    >
+                    <img src="images/GOAT.jpeg" alt="The GOAT" class="goat-image"
+                        onerror="this.onerror=null; this.src='images/GOAT.jpeg'; this.onerror=function(){this.src='images/GOAT.png'};">
                 </div>
 
                 <div class="certificate" id="certificate">
@@ -67,6 +66,6 @@
     </div>
 
     <script src="dithering.js"></script>
-    <script src="goat.js"></script>
 </body>
+
 </html>

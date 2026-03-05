@@ -6,7 +6,7 @@
 
   const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
   if (!gl) {
-   
+
     canvas.style.background = 'radial-gradient(ellipse at center, rgba(233,69,96,0.15) 0%, transparent 70%)';
     return;
   }
@@ -27,12 +27,10 @@
     uniform vec2 u_resolution;
     uniform float u_speed;
 
-    // ...existing code...
     float bayer4x4(vec2 pos) {
       int x = int(mod(pos.x, 4.0));
       int y = int(mod(pos.y, 4.0));
       int index = x + y * 4;
-      // ...existing code...
       if (index == 0) return 0.0 / 16.0;
       if (index == 1) return 8.0 / 16.0;
       if (index == 2) return 2.0 / 16.0;
@@ -52,7 +50,6 @@
       return 0.0;
     }
 
-    // ...existing code...
     float hash(vec2 p) {
       return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
     }
@@ -86,32 +83,25 @@
       vec2 pixelPos = gl_FragCoord.xy;
       float t = u_time * u_speed;
 
-      // Warp distortion
       vec2 warpUV = uv * 3.0;
       float warp1 = fbm(warpUV + t * 0.3);
       float warp2 = fbm(warpUV + warp1 * 1.5 + t * 0.2);
       vec2 warpedUV = uv + vec2(warp1, warp2) * 0.15;
 
-      // Radial gradient base
       vec2 center = vec2(0.5, 0.5);
       float dist = length(warpedUV - center);
       float gradient = smoothstep(0.0, 1.2, dist);
       float intensity = 1.0 - gradient;
 
-      // Add flowing organic shapes
       float flow = fbm(warpedUV * 4.0 + t * 0.15);
       intensity *= flow * 1.8;
       intensity = clamp(intensity, 0.0, 1.0);
 
-      // Apply Bayer dithering
       float bayerVal = bayer4x4(pixelPos);
       float dithered = step(bayerVal, intensity);
 
-      // Color: teal/cyan emerald green
-      vec3 color = vec3(0.0, 0.65, 0.55); // teal
-      
-      // Secondary color accent for depth
-      vec3 color2 = vec3(0.1, 0.85, 0.70); // bright cyan-green
+      vec3 color = vec3(0.0, 0.65, 0.55);
+      vec3 color2 = vec3(0.1, 0.85, 0.70);
       float colorMix = fbm(warpedUV * 2.0 - t * 0.1);
       vec3 finalColor = mix(color, color2, colorMix * 0.5);
 
@@ -151,12 +141,12 @@
   const program = createProgram(gl, vs, fs);
   if (!program) return;
 
- 
+
   const positionBuffer = gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
-    -1, -1,  1, -1,  -1, 1,
-    -1,  1,  1, -1,   1, 1,
+    -1, -1, 1, -1, -1, 1,
+    -1, 1, 1, -1, 1, 1,
   ]), gl.STATIC_DRAW);
 
   const aPosition = gl.getAttribLocation(program, 'a_position');
@@ -167,7 +157,7 @@
   let speed = 0.2;
   let startTime = performance.now();
 
-  
+
   function resize() {
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
     const w = canvas.clientWidth;
@@ -180,7 +170,7 @@
   window.addEventListener('resize', resize);
   resize();
 
-  
+
   function render() {
     const elapsed = (performance.now() - startTime) / 1000;
 

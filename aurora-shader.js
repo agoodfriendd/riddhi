@@ -52,7 +52,6 @@
       return v;
     }
 
-    // tanh polyfill for WebGL 1.0
     vec4 tanh_approx(vec4 x) {
       vec4 x2 = x * x;
       return x * (27.0 + x2) / (27.0 + 9.0 * x2);
@@ -123,8 +122,8 @@
   const positionBuffer = gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
-    -1, -1,  1, -1,  -1, 1,
-    -1,  1,  1, -1,   1, 1,
+    -1, -1, 1, -1, -1, 1,
+    -1, 1, 1, -1, 1, 1,
   ]), gl.STATIC_DRAW);
 
   const aPosition = gl.getAttribLocation(program, 'a_position');
@@ -145,7 +144,7 @@
   window.addEventListener('resize', resize);
   resize();
 
- 
+
   function render() {
     time += 0.016;
 

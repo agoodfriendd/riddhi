@@ -52,8 +52,8 @@ audioPlayer.volume = 0.7;
 function loadSong(index) {
     currentSong = index;
     audioPlayer.src = songs[index].url;
-    
-   
+
+
     songItems.forEach((item, i) => {
         if (i === index) {
             item.classList.add('active');
@@ -124,8 +124,8 @@ audioPlayer.addEventListener('timeupdate', () => {
     const { currentTime, duration } = audioPlayer;
     const progressPercent = (currentTime / duration) * 100;
     progressFill.style.width = `${progressPercent}%`;
-    
-    
+
+
     currentTimeEl.textContent = formatTime(currentTime);
     if (duration) {
         totalTimeEl.textContent = formatTime(duration);

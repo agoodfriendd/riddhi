@@ -1,4 +1,4 @@
- 
+
 
 (function () {
   const canvas = document.getElementById('warp-canvas');
@@ -10,7 +10,7 @@
     return;
   }
 
-  
+
   const vertexShaderSource = `
     attribute vec2 a_position;
     varying vec2 v_uv;
@@ -77,7 +77,6 @@
       float f2 = warpedFbm(p + vec2(3.0, -2.0), t * 0.8);
       float f3 = warpedFbm(p * 0.8 + vec2(-1.0, 4.0), t * 1.2);
 
-      // Swirl
       vec2 center = vec2(aspect * 0.5, 0.5);
       vec2 d = v_uv * vec2(aspect, 1.0) - center;
       float swirlFactor = exp(-length(d) * 1.5) * 0.8 * sin(t * 0.15);
@@ -89,22 +88,18 @@
 
       float combined = f1 * 0.4 + f2 * 0.25 + f3 * 0.2 + f4 * 0.15;
 
-      // Color layers
       float dark = smoothstep(0.2, 0.5, combined);
       float bright = smoothstep(0.45, 0.75, combined);
       float highlight = smoothstep(0.65, 0.85, combined);
 
-      // Build color: dark teal -> mid teal -> bright cyan -> mint
       vec3 col = vec3(0.0, 0.12, 0.16);
       col = mix(col, vec3(0.0, 0.35, 0.40), dark);
       col = mix(col, vec3(0.30, 0.85, 0.75), bright);
       col = mix(col, vec3(0.55, 1.0, 0.85), highlight * 0.8);
 
-      // Specular highlights
       float spec = smoothstep(0.78, 0.95, combined);
       col += vec3(0.15, 0.35, 0.25) * spec;
 
-      // Vignette
       vec2 vc = v_uv - 0.5;
       col *= 1.0 - dot(vc, vc) * 0.3;
 
@@ -112,7 +107,7 @@
     }
   `;
 
-  
+
   function createShader(gl, type, source) {
     const shader = gl.createShader(type);
     gl.shaderSource(shader, source);
@@ -144,12 +139,12 @@
   const program = createProgram(gl, vs, fs);
   if (!program) return;
 
-  
+
   const positionBuffer = gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
-    -1, -1,  1, -1,  -1, 1,
-    -1,  1,  1, -1,   1, 1,
+    -1, -1, 1, -1, -1, 1,
+    -1, 1, 1, -1, 1, 1,
   ]), gl.STATIC_DRAW);
 
   const aPosition = gl.getAttribLocation(program, 'a_position');
@@ -158,7 +153,7 @@
 
   let startTime = performance.now();
 
-  
+
   function resize() {
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
     const w = canvas.clientWidth;
@@ -171,7 +166,7 @@
   window.addEventListener('resize', resize);
   resize();
 
-  
+
   function render() {
     const elapsed = (performance.now() - startTime) / 1000;
 

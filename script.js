@@ -1,25 +1,12 @@
-document.addEventListener('DOMContentLoaded', function() {
-    const paragraphs = document.querySelectorAll('.apology p');
-
-    paragraphs.forEach((p, index) => {
-        p.style.opacity = '0';
-        p.style.transform = 'translateY(20px)';
-        p.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
-
-        setTimeout(() => {
-            p.style.opacity = '1';
-            p.style.transform = 'translateY(0)';
-        }, 300 * (index + 1));
-    });
-
+document.addEventListener('DOMContentLoaded', function () {
     const emphasisBox = document.querySelector('.emphasis');
     if (emphasisBox) {
-        emphasisBox.addEventListener('mouseenter', function() {
+        emphasisBox.addEventListener('mouseenter', function () {
             this.style.transform = 'scale(1.02)';
             this.style.transition = 'transform 0.3s ease';
         });
 
-        emphasisBox.addEventListener('mouseleave', function() {
+        emphasisBox.addEventListener('mouseleave', function () {
             this.style.transform = 'scale(1)';
         });
     }
@@ -35,7 +22,6 @@ document.addEventListener('DOMContentLoaded', function() {
         while (y < 95) {
             positions.push(y);
 
-            // Creates occasional mini-clusters (e.g. 2 close, then a larger gap)
             if (Math.random() < 0.35) {
                 y += randomBetween(smallGapMin, smallGapMax);
                 if (y < 95) {
@@ -90,14 +76,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     document.querySelectorAll('.container').forEach((container) => {
-        const sharedPositions = generatePositions(
-            4,
-            11,
-            4,
-            7,
-            14,
-            24
-        );
+        const sharedPositions = generatePositions(4, 11, 4, 7, 14, 24);
         addRandomEdgeDecor(container, '\uD83C\uDF3B', 'sunflower', {
             positions: sharedPositions,
             minTilt: 8,
