@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>One Last Thing - Riddhi</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="goat.css">
+</head>
+
+<body>
+    <canvas id="dithering-canvas"></canvas>
+
+    <nav class="navigation">
+        <a href="index.html">&larr; Back to Start</a>
+        <a href="goat.html">&larr; Previous</a>
+    </nav>
+
+    <div class="container">
+        <section class="r2-section">
+            <h2 class="r2-title">One Last Thing</h2>
+            <div class="r2-letter">
+                <p class="r2-salutation">Riddhi,</p>
+
+                <p>There is something I still need to say. Something I need you to actually hear.</p>
+
+                <p>I am genuinely sorry for hurting you, Riddhi.<br>
+                I am sorry for threatening you. You never deserved that. Not even a little. Not even for a second.</p>
+
+                <p>There is no reason good enough, no frustration deep enough, no argument heated enough that could ever justify what I said or did. I was wrong. Completely, WRONG. And I know that.</p>
+
+                <p>I want you to know something clearly: <em>you are safe.</em> You have nothing to fear from me. I will never say or do anything like that again. That is not who I want to be, and it is certainly not how I want you to feel around me, not afraid, not unsure, never uncertain about whether you are okay.</p>
+
+                <p>I have always cared for you. I still do. That has never changed, and it never will. If anything ever happens to you, if you are ever in pain, scared, or unsure, I will always be there. Without question, without hesitation.</p>
+
+                <p>I promise I will never hurt you again.</p>
+
+                <p>You are like a sister to me. And I mean that in every real sense of the word. You always will be. No argument, no distance, no silence will ever change that. I am your brother, and I always will be.</p>
+
+                <p>I keep thinking about it.</p>
+
+                <p class="r2-question">What will I lose if I have you?<br>
+                What will I have if I lose you, Riddhi?</p>
+
+                <p>The answer scares me. Because the truth is, you mean the world to me. And I refuse to let my worst moments define what we are to each other.</p>
+
+                <div class="r2-closing">
+                    <p>The best sister.<br>Love you.</p>
+                </div>
+
+                <div class="r2-gift-wrap">
+                    <button class="r2-gift-btn" id="giftBtn">a small gift for you</button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div class="popup-bg" id="cupcakePopupBg">
+        <div class="popup r2-popup">
+            <h3 class="r2-popup-title">&#x1F381; Take your gift</h3>
+            <div class="r2-popup-cupcake">
+                <img src="images/cupcake.jpg" alt="Chocolate Cupcake" class="r2-cupcake-img">
+            </div>
+            <p class="r2-popup-coupon">Here is a free cupcake coupon.</p>
+            <button class="r2-popup-close-btn" id="cupcakeCloseBtn">Close</button>
+        </div>
+    </div>
+
+    <div class="made-by made-by--r2">
+        Made with ❤️ by Saksham
+    </div>
+
+    <script src="dithering.js"></script>
+    <script>
+        document.getElementById('giftBtn').addEventListener('click', function () {
+            document.getElementById('cupcakePopupBg').style.display = 'flex';
+        });
+        document.getElementById('cupcakeCloseBtn').addEventListener('click', function () {
+            document.getElementById('cupcakePopupBg').style.display = 'none';
+        });
+    </script>
+</body>
+
+</html>
