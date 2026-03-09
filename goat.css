@@ -1,3 +1,12 @@
+.made-by {
+    text-align: center;
+    padding: 24px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #f7c59f;
+    letter-spacing: 1px;
+}
+
 .goat-section {
     text-align: center;
     margin: 1em auto;

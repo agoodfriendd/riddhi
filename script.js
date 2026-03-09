@@ -1,4 +1,38 @@
 document.addEventListener('DOMContentLoaded', function () {
+    const goatImg = document.getElementById('goat-img');
+    if (goatImg) {
+        goatImg.addEventListener('error', function () {
+            this.onerror = null;
+            this.src = 'images/GOAT.png';
+        });
+    }
+
+    const question1Img = document.getElementById('question1-img');
+    if (question1Img) {
+        question1Img.addEventListener('error', function () {
+            this.onerror = null;
+            this.src = 'https://placekitten.com/240/240';
+        });
+    }
+
+    const yesBtn = document.getElementById('yesBtn');
+    const noBtn = document.getElementById('noBtn');
+    const popupBg = document.getElementById('popupBg');
+    if (yesBtn && noBtn && popupBg) {
+        const popupYesBtn = document.getElementById('popupYesBtn');
+        const popupNoBtn = document.getElementById('popupNoBtn');
+        const closePopupBtn = document.getElementById('closePopupBtn');
+        noBtn.onclick = function () { popupBg.style.display = 'flex'; };
+        if (popupYesBtn) {
+            yesBtn.onclick = function () { window.location.href = 'questions2.html'; };
+            popupYesBtn.onclick = function () { window.location.href = 'questions2.html'; };
+            popupNoBtn.onclick = function () { popupBg.style.display = 'none'; };
+        } else if (closePopupBtn) {
+            yesBtn.onclick = function () { window.location.href = 'reassurance.html'; };
+            closePopupBtn.onclick = function () { popupBg.style.display = 'none'; };
+        }
+    }
+
     const emphasisBox = document.querySelector('.emphasis');
     if (emphasisBox) {
         emphasisBox.addEventListener('mouseenter', function () {

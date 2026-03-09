@@ -100,7 +100,7 @@ body {
 }
 
 .music-player {
-    display: none;
+    display: block;
     background: rgba(18, 18, 18, 0.95);
     border-radius: 15px;
     padding: 30px;
@@ -283,6 +283,14 @@ body {
     border-radius: 50%;
     cursor: pointer;
     border: none;
+}
+
+.playlist-note {
+    margin-top: 20px;
+    text-align: center;
+    max-width: 720px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 @media (max-width: 768px) {
